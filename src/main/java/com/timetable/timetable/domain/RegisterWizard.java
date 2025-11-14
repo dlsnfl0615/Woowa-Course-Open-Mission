@@ -41,6 +41,10 @@ public class RegisterWizard {
             return false;
         }
 
+        if (lecture.isCyberLecture()) {
+            return true;
+        }
+
         if (usedLectures.isEmpty()) {
             return true;
         }
