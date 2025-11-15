@@ -9,11 +9,11 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: 70px repeat(5, 1fr);
-            grid-auto-rows: 70px;
+            grid-template-rows: 40px repeat(28, 35px);
             border: 1px solid black;
+            border-collapse: collapse;
         }
 
-        /* 요일 */
         .day {
             display: flex;
             align-items: center;
@@ -22,170 +22,35 @@
             border-bottom: 2px solid black;
             background: lightgray;
         }
-
-        /* 시간 라벨 */
         .lecture-time {
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 13px;
-            border-right: 1px solid;
-            border-bottom: 1px solid;
+            border-right: 2px solid black;
+            background: lightgray;
         }
 
-        /* 빈 칸 */
-        .empty-cell {
-            border-bottom: 1px solid;
-            border-right: 1px solid;
-        }
-
-        /* 강의 블록 */
-        .registered-lecture {
-            padding: 6px;
-            border-radius: 5px;
-            border: 1px solid;
-            font-size: 13px;
-            line-height: 1.3;
-        }
-
-        /* 텍스트 스타일 */
-        .lecture-title {
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
 
 <div class="timetable-container">
+    <div class="day" style="grid-column: 2; grid-row: 1;">월</div>
+    <div class="day" style="grid-column: 3; grid-row: 1;">화</div>
+    <div class="day" style="grid-column: 4; grid-row: 1;">수</div>
+    <div class="day" style="grid-column: 5; grid-row: 1;">목</div>
+    <div class="day" style="grid-column: 6; grid-row: 1;">금</div>
 
+    <div class="lecture-time" style="grid-row: 2 / 4;">오전 9시</div>
+    <div class="lecture-time" style="grid-row: 4 / 6;">오전 10시</div>
+    <div class="lecture-time" style="grid-row: 6 / 8;">오전 11시</div>
+    <div class="lecture-time" style="grid-row: 8 / 10;">오후 12시</div>
+    <div class="lecture-time" style="grid-row: 10 / 12;">오후 1시</div>
+    <div class="lecture-time" style="grid-row: 12 / 14;">오후 2시</div>
+    <div class="lecture-time" style="grid-row: 14 / 16;">오후 3시</div>
+    <div class="lecture-time" style="grid-row: 16 / 18;">오후 4시</div>
 
-        <!-- 빈칸 + 요일 -->
-        <div></div>
-        <div class="day">월</div>
-        <div class="day">화</div>
-        <div class="day">수</div>
-        <div class="day">목</div>
-        <div class="day">금</div>
-
-        <!-- 9시 -->
-        <div class="lecture-time">오전 9시</div>
-        <div class="empty-cell yellow">근로</div>
-        <div class="empty-cell yellow">근로</div>
-        <div class="empty-cell yellow">근로</div>
-        <div class="empty-cell yellow">근로</div>
-        <div class="empty-cell yellow">근로</div>
-
-        <!-- 10시 -->
-        <div class="lecture-time">오전 10시</div>
-        <div class="empty-cell blue registered-lecture">
-            <div class="lecture-title">공학수학1</div>
-            강의실
-        </div>
-        <div class="empty-cell blue registered-lecture">
-            <div class="lecture-title">소프트웨어공학</div>
-            강의실
-        </div>
-        <div class="empty-cell blue registered-lecture">
-            <div class="lecture-title">공학수학1</div>
-            강의실
-        </div>
-        <div class="empty-cell blue registered-lecture">
-            <div class="lecture-title">소프트웨어공학</div>
-            강의실
-        </div>
-        <div class="empty-cell yellow">근로</div>
-
-        <!-- 11시 -->
-        <div class="lecture-time">오전 11시</div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-
-        <!-- 12시 -->
-        <div class="lecture-time">오후 12시</div>
-        <div class="empty-cell pink registered-lecture">
-            <div class="lecture-title">인공지능</div>
-            강의실
-        </div>
-        <div class="empty-cell green registered-lecture">
-            <div class="lecture-title">시스템소프트웨어</div>
-            강의실
-        </div>
-        <div class="empty-cell pink registered-lecture">
-            <div class="lecture-title">인공지능</div>
-            강의실
-        </div>
-        <div class="empty-cell green registered-lecture">
-            <div class="lecture-title">시스템소프트웨어</div>
-            강의실
-        </div>
-        <div class="empty-cell yellow">근로</div>
-
-        <!-- 1시 -->
-        <div class="lecture-time">오후 1시</div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-
-        <!-- 2시 -->
-        <div class="lecture-time">오후 2시</div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell blue registered-lecture">
-            <div class="lecture-title">데이터베이스설계</div>
-            강의실
-        </div>
-        <div class="empty-cell yellow">근로</div>
-        <div class="empty-cell blue registered-lecture">
-            <div class="lecture-title">데이터베이스설계</div>
-            강의실
-        </div>
-        <div class="empty-cell"></div>
-
-        <!-- 3시 -->
-        <div class="lecture-time">오후 3시</div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-
-        <!-- 4시 -->
-        <div class="lecture-time">오후 4시</div>
-        <div class="empty-cell yellow">알고</div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-
-        <!-- 5시 -->
-        <div class="lecture-time">오후 5시</div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-
-        <!-- 6시 -->
-        <div class="lecture-time">오후 6시</div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell pink registered-lecture">
-            <div class="lecture-title">기타</div>
-            학생회관 6층
-        </div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-        <div class="empty-cell"></div>
-
-        <!-- 7시~11시 (빈칸) -->
-        <div class="lecture-time">오후 7시</div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div>
-        <div class="lecture-time">오후 8시</div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div>
-        <div class="lecture-time">오후 9시</div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div>
-        <div class="lecture-time">오후 10시</div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div>
-        <div class="lecture-time">오후 11시</div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div><div class="empty-cell"></div>
 
 
 </div>
