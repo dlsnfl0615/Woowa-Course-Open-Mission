@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>시간표 예시</title>
+    <style>
+        .timetable-container {
+            width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 70px repeat(5, 1fr);
+            grid-template-rows: 40px repeat(30, 50px);
+            border: 2px solid black;
+            border-collapse: collapse;
+        }
+
+        .day {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-bottom: 2px solid black;
+            border-right: 1px solid black;
+            background: lightgray;
+        }
+
+        .lecture-time {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            border-right: 2px solid black;
+            border-bottom: 1px solid black;
+            background: lightgray;
+        }
+
+        .registered-lecture {
+            padding: 6px;
+            border: 1px solid black;
+            background: lavender;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-collapse: collapse;
+            position: relative;
+            z-index: 10;
+        }
+
+        .empty-cell {
+            border: 1px solid black;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cyber-lecture {
+            width: 900px;
+            margin: 0 auto;
+            border: 1px solid black;
+            background: lightcyan;
+        }
+
+    </style>
+</head>
+<body>
+<h1>시간표 제작 결과</h1>
+<div class="timetable-container">
+    <div class="day" style="grid-column: 2; grid-row: 1;">월</div>
+    <div class="day" style="grid-column: 3; grid-row: 1;">화</div>
+    <div class="day" style="grid-column: 4; grid-row: 1;">수</div>
+    <div class="day" style="grid-column: 5; grid-row: 1;">목</div>
+    <div class="day" style="grid-column: 6; grid-row: 1;">금</div>
+
+    <div class="lecture-time" style="grid-row: 2 / 4;">09시</div>
+    <div class="lecture-time" style="grid-row: 4 / 6;">10시</div>
+    <div class="lecture-time" style="grid-row: 6 / 8;">11시</div>
+    <div class="lecture-time" style="grid-row: 8 / 10;">12시</div>
+    <div class="lecture-time" style="grid-row: 10 / 12;">13시</div>
+    <div class="lecture-time" style="grid-row: 12 / 14;">14시</div>
+    <div class="lecture-time" style="grid-row: 14 / 16;">15시</div>
+    <div class="lecture-time" style="grid-row: 16 / 18;">16시</div>
+    <div class="lecture-time" style="grid-row: 18 / 20;">17시</div>
+    <div class="lecture-time" style="grid-row: 20 / 22;">18시</div>
+    <div class="lecture-time" style="grid-row: 22 / 24;">19시</div>
+    <div class="lecture-time" style="grid-row: 24 / 26;">20시</div>
+    <div class="lecture-time" style="grid-row: 26 / 28;">21시</div>
+    <div class="lecture-time" style="grid-row: 28 / 30;">22시</div>
+    <div class="lecture-time" style="grid-row: 30 / 32;">23시</div>
+
+    <!--빈공간 채워두기-->
+    <th:block th:each="row : ${#numbers.sequence(2, 31)}">
+        <th:block th:each="col : ${#numbers.sequence(2, 6)}">
+            <div class="empty-cell"
+                 th:style="|grid-column: ${col}; grid-row: ${row};|">
+            </div>
+        </th:block>
+    </th:block>
+
+    <!--시간표의 강의 채워넣기-->
+    <th:block th:if="${lecture.cyberLecture() == false}" th:each="lecture : ${lectures}">
+        <div th:each="time : ${lecture.times()}"
+             class="registered-lecture"
+             th:style="${time.convertToGridPosition()}">
+            <div th:text="${lecture.lectureName}"></div>
+            <div th:text="${lecture.lectureCode()}"></div>
+            <div th:text="${lecture.professorName()}"></div>
+            <div th:text="${lecture.lectureRoom()}"></div>
+        </div>
+    </th:block>
+
+</div>
+<br>
+<h1>사이버강의</h1>
+<div>
+    <th:block th:if="${lecture.cyberLecture() == true}" th:each="lecture : ${lectures}">
+        <div class="cyber-lecture">
+            <div th:text="${lecture.lectureName}"></div>
+            <div th:text="${lecture.lectureCode()}"></div>
+            <div th:text="${lecture.professorName()}"></div>
+            <div th:text="${lecture.lectureRoom()}"></div>
+        </div>
+    </th:block>
+</div>
+
+</body>
+</html>
