@@ -38,9 +38,10 @@ public class ExcelParser {
                 String lectureName = row.getCell(5).getStringCellValue();
                 String professorName = row.getCell(6).getStringCellValue();
                 String lectureCode = row.getCell(4).getStringCellValue();
+                String lectureRoom = row.getCell(8).getStringCellValue();
                 String time = row.getCell(7).getStringCellValue();
 
-                addLectures(parsedLectures, lectureName, professorName, lectureCode, time);
+                addLectures(parsedLectures, lectureName, professorName, lectureCode, lectureRoom, time);
             }
         } catch (IOException e) {
             System.out.println("파일을 열 수 없습니다.");
@@ -50,15 +51,15 @@ public class ExcelParser {
         return parsedLectures;
     }
 
-    public void addLectures(List<Lecture> parsedLectures, String lectureName, String professorName, String lectureCode, String time) {
+    public void addLectures(List<Lecture> parsedLectures, String lectureName, String professorName, String lectureCode, String lectureRoom, String time) {
         // 사이버강의이면
         if (time.isEmpty()) {
-            parsedLectures.add(new Lecture(lectureName, professorName, lectureCode, null, true));
+            parsedLectures.add(new Lecture(lectureName, professorName, lectureCode, null, null, true));
             return;
         }
 
         List<TimeSlot> lectureTimes = parseLectureTimes(time);
-        parsedLectures.add(new Lecture(lectureName, professorName, lectureCode, lectureTimes, false));
+        parsedLectures.add(new Lecture(lectureName, professorName, lectureCode, lectureRoom, lectureTimes, false));
     }
 
     // 강의 시간 가져오기

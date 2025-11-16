@@ -8,19 +8,17 @@ public class Lecture {
     private final String lectureName;
     private final String professorName;
     private final String lectureCode;
+    private final String lectureRoom;
     private final List<TimeSlot> lectureTimes;
     private final boolean cyberLecture;
 
-    public Lecture(String lectureName, String professorName, String lectureCode, List<TimeSlot> lectureTimes, boolean cyberLecture) {
+    public Lecture(String lectureName, String professorName, String lectureCode, String lectureRoom, List<TimeSlot> lectureTimes, boolean cyberLecture) {
         this.lectureName = lectureName;
         this.professorName = professorName;
         this.lectureCode = lectureCode;
+        this.lectureRoom = lectureRoom;
         this.lectureTimes = lectureTimes;
         this.cyberLecture = cyberLecture;
-    }
-
-    public boolean isCyberLecture() {
-        return cyberLecture;
     }
 
     public boolean overlapsNameWith(Lecture otherLecture) {
@@ -86,7 +84,15 @@ public class Lecture {
         return lectureCode;
     }
 
+    public String getLectureRoom() {
+        return lectureRoom;
+    }
+
     public List<TimeSlot> getLectureTimes() {
         return List.copyOf(lectureTimes);
+    }
+
+    public boolean isCyberLecture() {
+        return cyberLecture;
     }
 }
