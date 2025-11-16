@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        .lecture-list-panel {
+            width: 60%;
+            height: auto;
+        }
+
+        .register-lecture-panel {
+            width: 40%;
+            height: auto;
+        }
+
+        .input-row {
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="lecture-list-panel">
+            <h2>강의 목록</h2>
+            <div th:each="lecture : ${lectureLists}">
+                <div th:text="|${lecture.lectureName()} ${lecture.lectureCode()}|"></div>
+            </div>
+        </div>
+
+        <div class="register-lecture-panel">
+            <h2>신청하고자 하는 강의</h2>
+            <form>
+                <div id="form-container">
+                    <div class="input-row">
+                        <input type="text" name="items" placeholder="값 입력">
+                    </div>
+                </div>
+
+                <button type="button" id="add-btn">+ 추가</button>
+                <br><br>
+                <button type="submit">제출</button>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+    document.getElementById("add-btn").addEventListener("click", function () {
+        const container = document.getElementById("form-container");
+
+        const newRow = document.createElement("div");
+        newRow.className = "input-row";
+
+        newRow.innerHTML = `
+            <input type="text" name="items" placeholder="값 입력">
+        `;
+
+        container.appendChild(newRow);
+    });
+</script>
+
+</html>
