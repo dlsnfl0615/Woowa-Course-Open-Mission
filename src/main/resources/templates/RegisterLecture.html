@@ -31,20 +31,30 @@
         <div class="lecture-list-panel">
             <h2>강의 목록</h2>
             <div th:each="lecture : ${lectureLists}">
-                <div th:text="|${lecture.lectureName()} ${lecture.lectureCode()}|"></div>
+                <span th:text="|${lecture.lectureName()} ${lecture.lectureCode()}|"></span>
+                <span th:each="time : ${lecture.times()}" th:text="|${time.day()} ${time.start()} ${time.end()} |"></span>
             </div>
         </div>
 
         <div class="register-lecture-panel">
-            <h2>신청하고자 하는 강의</h2>
-            <form>
+            <form action="/receive" method="post">
+                <h2>신청 강의</h2>
                 <div id="form-container">
                     <div class="input-row">
-                        <input type="text" name="items" placeholder="값 입력">
+                        <input type="text" name="lectures" placeholder="학수번호 입력">
                     </div>
                 </div>
+                <button onclick="createInput()" type="button">+ 추가</button>
 
-                <button type="button" id="add-btn">+ 추가</button>
+                <h2>공강일 지정</h2>
+                <div>
+                    <input type="checkbox" name="days" value="월">
+                    <input type="checkbox" name="days" value="화">
+                    <input type="checkbox" name="days" value="수">
+                    <input type="checkbox" name="days" value="목">
+                    <input type="checkbox" name="days" value="금">
+                </div>
+
                 <br><br>
                 <button type="submit">제출</button>
             </form>
@@ -55,18 +65,21 @@
 </body>
 
 <script>
-    document.getElementById("add-btn").addEventListener("click", function () {
+    function createInput() {
         const container = document.getElementById("form-container");
 
         const newRow = document.createElement("div");
         newRow.className = "input-row";
 
-        newRow.innerHTML = `
-            <input type="text" name="items" placeholder="값 입력">
-        `;
+        const newInput = document.createElement("input");
+        newInput.type = "text";
+        newInput.placeholder = "학수번호 입력";
+        newInput.name = "lectures";
+
+        newRow.appendChild(newInput);
 
         container.appendChild(newRow);
-    });
+    }
 </script>
 
 </html>
