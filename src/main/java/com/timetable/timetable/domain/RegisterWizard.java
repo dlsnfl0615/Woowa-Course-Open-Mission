@@ -3,10 +3,10 @@ package com.timetable.timetable.domain;
 import java.util.*;
 
 public class RegisterWizard {
-    List<Lecture> usedLectures;
+    private final List<Lecture> usedLectures = new ArrayList<>();
 
     public List<TimeTable> makeTimeTable(List<Lecture> lecturesToRegister, List<Day> noLectureDays) {
-        usedLectures = new ArrayList<>();
+
         int uniqueLectures = divideLectureByType(lecturesToRegister).size(); // 강의 종류 수
         List<TimeTable> timeTables = new ArrayList<>();
 
