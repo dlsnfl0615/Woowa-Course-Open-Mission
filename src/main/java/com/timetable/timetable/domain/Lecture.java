@@ -25,7 +25,11 @@ public class Lecture {
         return this.isSameNameAs(otherLecture.lectureName);
     }
 
-    public boolean isSameNameAs(String otherLectureCode) {
+    public boolean isSameNameAs(String otherLectureName) {
+        return this.lectureName.equals(otherLectureName);
+    }
+
+    public boolean isSameCodeAs(String otherLectureCode) {
         return this.lectureCode.equals(otherLectureCode);
     }
 
