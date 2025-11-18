@@ -17,7 +17,7 @@ public class LectureMatcher {
 
     public boolean matches(Lecture lecture, List<String> lectureCodes) {
         for (String lectureCode : lectureCodes) {
-            if (lecture.isSameNameAs(lectureCode)) {
+            if (lecture.isSameCodeAs(lectureCode)) {
                 return true;
             }
         }
