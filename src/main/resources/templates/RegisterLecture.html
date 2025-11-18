@@ -35,12 +35,17 @@
     <div class="container">
 
         <div style="overflow: scroll">
+            <h2>강의 목록</h2>
+            <form action="/search" method="post">
+                <input type="text" name="lectureToSearch" placeholder="전체 강의 조회시 검색어 없이 검색 버튼 클릭"></input>
+                <button type="submit">검색</button>
+            </form>
             <table border="1px">
                 <th>강의명</th>
                 <th>학수번호</th>
                 <th>교수명</th>
                 <th>강의시간</th>
-                <tr th:each="lecture : ${lectureLists}">
+                <tr th:each="lecture : ${searchedLectures}">
                     <td th:text="${lecture.lectureName()}"></td>
                     <td th:text="${lecture.lectureCode()}"></td>
                     <td th:text="${lecture.professorName()}"></td>

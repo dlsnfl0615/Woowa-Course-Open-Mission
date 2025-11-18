@@ -8,8 +8,7 @@ import com.timetable.timetable.service.TimeTableMaker;
 import com.timetable.timetable.util.ExcelParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +24,11 @@ public class TableController {
         ExcelParser excelParser = new ExcelParser(PATH);
         allLectures = excelParser.parseExcel();
 
-        List<LectureRequest> lectureRequests = new ArrayList<>();
-        for (Lecture lecture : allLectures) {
-            lectureRequests.add(LectureRequest.from(lecture));
-        }
+        List<LectureRequest> lectureRequests = allLectures.stream()
+                .map(LectureRequest::from)
+                .toList();
 
-        model.addAttribute("lectureLists", lectureRequests);
+        model.addAttribute("searchedLectures", lectureRequests);
 
         return "RegisterLecture";
     }
@@ -54,5 +52,26 @@ public class TableController {
         model.addAttribute("timeTables", timeTableRequests);
 
         return "TimeTableResult";
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public String searchLecture(Model model, @RequestParam("lectureToSearch") String lectureNameToSearch) {
+        List<LectureRequest> searchedLectures = new ArrayList<>();
+
+        for (Lecture lecture : allLectures) {
+            if (lecture.isSameNameAs(lectureNameToSearch)) {
+                searchedLectures.add(LectureRequest.from(lecture));
+            }
+        }
+
+        if (lectureNameToSearch.isEmpty()) {
+            searchedLectures = allLectures.stream()
+                    .map(LectureRequest::from)
+                    .toList();
+        }
+
+        model.addAttribute("searchedLectures", searchedLectures);
+
+        return "RegisterLecture";
     }
 }
