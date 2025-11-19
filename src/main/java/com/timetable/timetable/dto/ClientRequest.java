@@ -4,6 +4,7 @@ import java.util.List;
 
 public record ClientRequest(
         List<String> lectures,
-        List<String> days
+        List<String> days,
+        List<String> lecturesForSpare
 ) {
 }
