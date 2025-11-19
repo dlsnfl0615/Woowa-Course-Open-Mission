@@ -65,6 +65,10 @@ public class Lecture {
     public boolean conflictsWithNoLectureDays(List<Day> noLectureDays) {
         boolean conflict = false;
 
+        if (noLectureDays.isEmpty()) {
+            return false;
+        }
+
         for (TimeSlot lectureTime : lectureTimes) {
             conflict = lectureTime.isSameDayWith(noLectureDays);
 
