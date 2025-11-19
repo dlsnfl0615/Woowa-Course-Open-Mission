@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -46,8 +47,7 @@ public class TableController {
 
         TimeTableMaker timeTableMaker = new TimeTableMaker(new RegisterWizard(), new LectureMatcher(), allLectures);
         List<TimeTableRequest> timeTables = makeTimeTable(registerCodes, noLectureDays, timeTableMaker);
-        List<TimeTableRequest> spareTimeTables = makeTimeTable(getLectureCodesForSpare(registerCodes, spareCodes),
-                noLectureDays, timeTableMaker);
+        List<TimeTableRequest> spareTimeTables = makeTimeTable(getLectureCodesForSpare(registerCodes, spareCodes), noLectureDays, timeTableMaker);
 
         model.addAttribute("timeTables", timeTables);
         model.addAttribute("spareTimeTables", spareTimeTables);
@@ -56,12 +56,20 @@ public class TableController {
     }
 
     public List<String> getLectureCodesForSpare(List<String> registerCodes, List<String> spareCodes) {
+        if (spareCodes.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         return registerCodes.stream()
                 .filter(code -> !spareCodes.contains(code))
                 .toList();
     }
 
     public List<TimeTableRequest> makeTimeTable(List<String> lectureCodes, List<Day> noLectureDays, TimeTableMaker timeTableMaker) {
+        if (lectureCodes.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         List<TimeTable> timeTables = timeTableMaker.makeTimeTable(lectureCodes, noLectureDays);
 
         List<TimeTableRequest> timeTableRequests = new ArrayList<>();
