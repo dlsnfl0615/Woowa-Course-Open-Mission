@@ -29,8 +29,6 @@ public record TimeSlotRequest(
         int startRow = calculateRow(start);
         int endRow = calculateRow(end);
 
-        System.out.printf("start: %d, end: %d\n", startRow, endRow);
-
         return new int[]{startRow, endRow};
     }
 
