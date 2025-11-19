@@ -3,6 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <style>
+        .result-time-table {
+            width: 50%;
+            height: 100vh;
+            overflow: scroll;
+        }
+
+        .spare-time-table {
+            width: 50%;
+            height: 100vh;
+            overflow: scroll;
+        }
+
         .timetable-container {
             width: 600px;
             margin: 0 auto;
@@ -37,6 +49,7 @@
         .registered-lecture {
             padding: 6px;
             border: 1px solid black;
+            font-size: clamp(8px, 4vw, 13px);
             background: lavender;
             display: flex;
             flex-direction: column;
@@ -64,73 +77,149 @@
 </head>
 <body>
 
-<div th:if="${timeTables.isEmpty()} == true">
-    <h1>제작 가능한 시간표가 없습니다.</h1>
-</div>
-
-<div th:if="${timeTables.isEmpty()} == false">
-    <h1>시간표 제작 결과</h1>
-    <th:block th:each="iterator : ${timeTables}">
-        <div class="timetable-container">
-            <div class="day" style="grid-column: 2; grid-row: 1;">월</div>
-            <div class="day" style="grid-column: 3; grid-row: 1;">화</div>
-            <div class="day" style="grid-column: 4; grid-row: 1;">수</div>
-            <div class="day" style="grid-column: 5; grid-row: 1;">목</div>
-            <div class="day" style="grid-column: 6; grid-row: 1;">금</div>
-
-            <div class="lecture-time" style="grid-row: 2 / 4;">09시</div>
-            <div class="lecture-time" style="grid-row: 4 / 6;">10시</div>
-            <div class="lecture-time" style="grid-row: 6 / 8;">11시</div>
-            <div class="lecture-time" style="grid-row: 8 / 10;">12시</div>
-            <div class="lecture-time" style="grid-row: 10 / 12;">13시</div>
-            <div class="lecture-time" style="grid-row: 12 / 14;">14시</div>
-            <div class="lecture-time" style="grid-row: 14 / 16;">15시</div>
-            <div class="lecture-time" style="grid-row: 16 / 18;">16시</div>
-            <div class="lecture-time" style="grid-row: 18 / 20;">17시</div>
-            <div class="lecture-time" style="grid-row: 20 / 22;">18시</div>
-            <div class="lecture-time" style="grid-row: 22 / 24;">19시</div>
-            <div class="lecture-time" style="grid-row: 24 / 26;">20시</div>
-            <div class="lecture-time" style="grid-row: 26 / 28;">21시</div>
-            <div class="lecture-time" style="grid-row: 28 / 30;">22시</div>
-            <div class="lecture-time" style="grid-row: 30 / 32;">23시</div>
-
-            <!--빈공간 채워두기-->
-            <th:block th:each="row : ${#numbers.sequence(2, 31)}">
-                <th:block th:each="col : ${#numbers.sequence(2, 6)}">
-                    <div class="empty-cell"
-                         th:style="|grid-column: ${col}; grid-row: ${row};|">
-                    </div>
-                </th:block>
-            </th:block>
-
-            <!--시간표의 강의 채워넣기-->
-            <th:block th:if="${lecture.cyberLecture() == false}" th:each="lecture : ${iterator.lectures()}">
-                <div th:each="time : ${lecture.times()}"
-                     class="registered-lecture"
-                     th:style="${time.convertToGridPosition()}">
-                    <div th:text="${lecture.lectureName}"></div>
-                    <div th:text="${lecture.lectureCode()}"></div>
-                    <div th:text="${lecture.professorName()}"></div>
-                    <div th:text="${lecture.lectureRoom()}"></div>
-                </div>
-            </th:block>
-
+<div style="display: flex">
+    <div class="result-time-table">
+        <div th:if="${timeTables.isEmpty()} == true">
+            <h1>제작 가능한 시간표가 없습니다.</h1>
         </div>
 
-        <br>
+        <div th:if="${timeTables.isEmpty()} == false">
+            <th:block th:each="iterator, status : ${timeTables}">
+                <h1 th:text="'시간표 제작 결과' + ' ' + ${status.index + 1}"></h1>
+                <div class="timetable-container">
+                    <div class="day" style="grid-column: 2; grid-row: 1;">월</div>
+                    <div class="day" style="grid-column: 3; grid-row: 1;">화</div>
+                    <div class="day" style="grid-column: 4; grid-row: 1;">수</div>
+                    <div class="day" style="grid-column: 5; grid-row: 1;">목</div>
+                    <div class="day" style="grid-column: 6; grid-row: 1;">금</div>
 
-        <h1>사이버강의</h1>
-        <div>
-            <th:block th:if="${lecture.cyberLecture() == true}" th:each="lecture : ${lectures}">
-                <div class="cyber-lecture">
-                    <div th:text="${lecture.lectureName}"></div>
-                    <div th:text="${lecture.lectureCode()}"></div>
-                    <div th:text="${lecture.professorName()}"></div>
-                    <div th:text="${lecture.lectureRoom()}"></div>
+                    <div class="lecture-time" style="grid-row: 2 / 4;">09시</div>
+                    <div class="lecture-time" style="grid-row: 4 / 6;">10시</div>
+                    <div class="lecture-time" style="grid-row: 6 / 8;">11시</div>
+                    <div class="lecture-time" style="grid-row: 8 / 10;">12시</div>
+                    <div class="lecture-time" style="grid-row: 10 / 12;">13시</div>
+                    <div class="lecture-time" style="grid-row: 12 / 14;">14시</div>
+                    <div class="lecture-time" style="grid-row: 14 / 16;">15시</div>
+                    <div class="lecture-time" style="grid-row: 16 / 18;">16시</div>
+                    <div class="lecture-time" style="grid-row: 18 / 20;">17시</div>
+                    <div class="lecture-time" style="grid-row: 20 / 22;">18시</div>
+                    <div class="lecture-time" style="grid-row: 22 / 24;">19시</div>
+                    <div class="lecture-time" style="grid-row: 24 / 26;">20시</div>
+                    <div class="lecture-time" style="grid-row: 26 / 28;">21시</div>
+                    <div class="lecture-time" style="grid-row: 28 / 30;">22시</div>
+                    <div class="lecture-time" style="grid-row: 30 / 32;">23시</div>
+
+                    <!--빈공간 채워두기-->
+                    <th:block th:each="row : ${#numbers.sequence(2, 31)}">
+                        <th:block th:each="col : ${#numbers.sequence(2, 6)}">
+                            <div class="empty-cell"
+                                 th:style="|grid-column: ${col}; grid-row: ${row};|">
+                            </div>
+                        </th:block>
+                    </th:block>
+
+                    <!--시간표의 강의 채워넣기-->
+                    <th:block th:if="${lecture.cyberLecture() == false}" th:each="lecture : ${iterator.lectures()}">
+                        <div th:each="time : ${lecture.times()}"
+                             class="registered-lecture"
+                             th:style="${time.convertToGridPosition()}">
+                            <div th:text="${lecture.lectureName}"></div>
+                            <div th:text="${lecture.lectureCode()}"></div>
+                            <div th:text="${lecture.professorName()}"></div>
+                            <div th:text="${lecture.lectureRoom()}"></div>
+                        </div>
+                    </th:block>
+
+                </div>
+
+                <br>
+
+                <h1>사이버강의</h1>
+                <div>
+                    <th:block th:if="${lecture.cyberLecture() == true}" th:each="lecture : ${iterator.lectures()}">
+                        <div class="cyber-lecture">
+                            <div th:text="${lecture.lectureName}"></div>
+                            <div th:text="${lecture.lectureCode()}"></div>
+                            <div th:text="${lecture.professorName()}"></div>
+                            <div th:text="${lecture.lectureRoom()}"></div>
+                        </div>
+                    </th:block>
                 </div>
             </th:block>
         </div>
-    </th:block>
+    </div>
+
+    <div class="spare-time-table">
+        <div th:if="${spareTimeTables.isEmpty()} == true">
+            <h1>스페어 시간표를 만들 수 없습니다.</h1>
+        </div>
+
+        <div th:if="${spareTimeTables.isEmpty()} == false">
+            <th:block th:each="iterator, status : ${spareTimeTables}">
+                <h1>스페어 시간표 제작 결과</h1>
+                <h1 th:text="'시간표 제작 결과' + ' ' + ${status.index + 1}"></h1>
+                <div class="timetable-container">
+                    <div class="day" style="grid-column: 2; grid-row: 1;">월</div>
+                    <div class="day" style="grid-column: 3; grid-row: 1;">화</div>
+                    <div class="day" style="grid-column: 4; grid-row: 1;">수</div>
+                    <div class="day" style="grid-column: 5; grid-row: 1;">목</div>
+                    <div class="day" style="grid-column: 6; grid-row: 1;">금</div>
+
+                    <div class="lecture-time" style="grid-row: 2 / 4;">09시</div>
+                    <div class="lecture-time" style="grid-row: 4 / 6;">10시</div>
+                    <div class="lecture-time" style="grid-row: 6 / 8;">11시</div>
+                    <div class="lecture-time" style="grid-row: 8 / 10;">12시</div>
+                    <div class="lecture-time" style="grid-row: 10 / 12;">13시</div>
+                    <div class="lecture-time" style="grid-row: 12 / 14;">14시</div>
+                    <div class="lecture-time" style="grid-row: 14 / 16;">15시</div>
+                    <div class="lecture-time" style="grid-row: 16 / 18;">16시</div>
+                    <div class="lecture-time" style="grid-row: 18 / 20;">17시</div>
+                    <div class="lecture-time" style="grid-row: 20 / 22;">18시</div>
+                    <div class="lecture-time" style="grid-row: 22 / 24;">19시</div>
+                    <div class="lecture-time" style="grid-row: 24 / 26;">20시</div>
+                    <div class="lecture-time" style="grid-row: 26 / 28;">21시</div>
+                    <div class="lecture-time" style="grid-row: 28 / 30;">22시</div>
+                    <div class="lecture-time" style="grid-row: 30 / 32;">23시</div>
+
+                    <!--빈공간 채워두기-->
+                    <th:block th:each="row : ${#numbers.sequence(2, 31)}">
+                        <th:block th:each="col : ${#numbers.sequence(2, 6)}">
+                            <div class="empty-cell"
+                                 th:style="|grid-column: ${col}; grid-row: ${row};|">
+                            </div>
+                        </th:block>
+                    </th:block>
+
+                    <!--시간표의 강의 채워넣기-->
+                    <th:block th:if="${lecture.cyberLecture() == false}" th:each="lecture : ${iterator.lectures()}">
+                        <div th:each="time : ${lecture.times()}"
+                             class="registered-lecture"
+                             th:style="${time.convertToGridPosition()}">
+                            <div th:text="${lecture.lectureName}"></div>
+                            <div th:text="${lecture.lectureCode()}"></div>
+                            <div th:text="${lecture.professorName()}"></div>
+                            <div th:text="${lecture.lectureRoom()}"></div>
+                        </div>
+                    </th:block>
+
+                </div>
+
+                <br>
+
+                <h1>사이버강의</h1>
+                <div>
+                    <th:block th:if="${lecture.cyberLecture() == true}" th:each="lecture : ${iterator.lectures()}">
+                        <div class="cyber-lecture">
+                            <div th:text="${lecture.lectureName}"></div>
+                            <div th:text="${lecture.lectureCode()}"></div>
+                            <div th:text="${lecture.professorName()}"></div>
+                            <div th:text="${lecture.lectureRoom()}"></div>
+                        </div>
+                    </th:block>
+                </div>
+            </th:block>
+        </div>
+    </div>
 </div>
 
 </body>
