@@ -7,6 +7,12 @@
             margin: 0;
         }
 
+        table, td, th {
+            border : 1px solid black;
+            border-collapse : collapse;
+            width: 100%;
+        }
+
         .container {
             display: flex;
             width: 100%;
@@ -34,13 +40,13 @@
 
     <div class="container">
 
-        <div style="overflow: scroll">
+        <div class="lecture-list-panel">
             <h2>강의 목록</h2>
             <form action="/search" method="post">
                 <input type="text" name="lectureToSearch" placeholder="전체 강의 조회시 검색어 없이 검색 버튼 클릭"></input>
                 <button type="submit">검색</button>
             </form>
-            <table border="1px">
+            <table style="table-layout: fixed; word-break: break-all; height: auto">
                 <th>강의명</th>
                 <th>학수번호</th>
                 <th>교수명</th>
@@ -50,7 +56,12 @@
                     <td th:text="${lecture.lectureCode()}"></td>
                     <td th:text="${lecture.professorName()}"></td>
                     <td>
-                        <div th:each="time : ${lecture.times()}" th:text="${time.day().getKoreanDay()} + ',' + ${time.start()} + '~' + ${time.end()} "></div>
+                        <span th:if="${lecture.cyberLecture() == false}">
+                            <div th:each="time : ${lecture.times()}" th:text="${time.day().getKoreanDay()} + ',' + ${time.start()} + '~' + ${time.end()} "></div>
+                        </span>
+                        <span th:if="${lecture.cyberLecture() == true}">
+                            <div>사이버강의</div>
+                        </span>
                     </td>
                 </tr>
             </table>
@@ -64,7 +75,7 @@
                         <input type="text" name="lectures" placeholder="학수번호 입력">
                     </div>
                 </div>
-                <button onclick="createInput()" type="button">+ 추가</button>
+                <button onclick="createInput('form-container', '학수번호 입력', 'lectures')" type="button">+ 추가</button>
 
                 <h2>공강일 지정</h2>
                 <div>
@@ -74,6 +85,14 @@
                     <input type="checkbox" name="days" value="목">목요일
                     <input type="checkbox" name="days" value="금">금요일
                 </div>
+
+                <h2>스페어 시간표 제작</h2>
+                <div id="spare-time-table">
+                    <div class="input-row">
+                        <input type="text" name="lectures" placeholder="경쟁률 높은 강의의 학수번호 입력">
+                    </div>
+                </div>
+                <button onclick="createInput('spare-time-table', '경쟁률 높은 강의의 학수번호 입력', 'lecturesForSpare')" type="button">+ 추가</button>
 
                 <br><br>
                 <button type="submit">시간표 만들기</button>
@@ -85,16 +104,16 @@
 </body>
 
 <script>
-    function createInput() {
-        const container = document.getElementById("form-container");
+    function createInput(containerId, placeHolder, varName) {
+        const container = document.getElementById(containerId);
 
         const newRow = document.createElement("div");
         newRow.className = "input-row";
 
         const newInput = document.createElement("input");
         newInput.type = "text";
-        newInput.placeholder = "학수번호 입력";
-        newInput.name = "lectures";
+        newInput.placeholder = placeHolder;
+        newInput.name = varName;
 
         newRow.appendChild(newInput);
 
