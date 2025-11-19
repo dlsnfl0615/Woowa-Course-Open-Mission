@@ -35,23 +35,41 @@ public class TableController {
 
     @PostMapping("/receive")
     public String sendTimeTableResults(ClientRequest clientRequest, Model model) {
-        List<String> lectureCodesToRegister = clientRequest.lectures();
+        List<String> registerCodes = clientRequest.lectures();
         List<Day> noLectureDays = Stream.ofNullable(clientRequest.days())
                 .flatMap(List::stream)
                 .map(Day::getDay)
                 .toList();
+        List<String> spareCodes = Stream.ofNullable(clientRequest.lecturesForSpare())
+                .flatMap(List::stream)
+                .toList();
 
-        TimeTableMaker timeTableMaker = new TimeTableMaker(new RegisterWizard(), new LectureMatcher());
-        List<TimeTable> timeTables = timeTableMaker.makeTimeTable(lectureCodesToRegister, allLectures, noLectureDays);
+        TimeTableMaker timeTableMaker = new TimeTableMaker(new RegisterWizard(), new LectureMatcher(), allLectures);
+        List<TimeTableRequest> timeTables = makeTimeTable(registerCodes, noLectureDays, timeTableMaker);
+        List<TimeTableRequest> spareTimeTables = makeTimeTable(getLectureCodesForSpare(registerCodes, spareCodes),
+                noLectureDays, timeTableMaker);
+
+        model.addAttribute("timeTables", timeTables);
+        model.addAttribute("spareTimeTables", spareTimeTables);
+
+        return "TimeTableResult";
+    }
+
+    public List<String> getLectureCodesForSpare(List<String> registerCodes, List<String> spareCodes) {
+        return registerCodes.stream()
+                .filter(code -> !spareCodes.contains(code))
+                .toList();
+    }
+
+    public List<TimeTableRequest> makeTimeTable(List<String> lectureCodes, List<Day> noLectureDays, TimeTableMaker timeTableMaker) {
+        List<TimeTable> timeTables = timeTableMaker.makeTimeTable(lectureCodes, noLectureDays);
 
         List<TimeTableRequest> timeTableRequests = new ArrayList<>();
         for (TimeTable timeTable : timeTables) {
             timeTableRequests.add(TimeTableRequest.from(timeTable));
         }
 
-        model.addAttribute("timeTables", timeTableRequests);
-
-        return "TimeTableResult";
+        return timeTableRequests;
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
