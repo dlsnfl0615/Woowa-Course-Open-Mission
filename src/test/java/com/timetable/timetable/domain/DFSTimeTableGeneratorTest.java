@@ -8,14 +8,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RegisterWizardTest {
+class DFSTimeTableGeneratorTest {
     List<Lecture> lectureToRegister = List.of(Data.lecture1, Data.lecture2, Data.lecture3, Data.lecture4, Data.lecture5, Data.lecture6, Data.lecture7);
-    RegisterWizard wizard = new RegisterWizard();
+    DFSTimeTableGenerator wizard = new DFSTimeTableGenerator();
 
     @Test
     void 공강날짜지정_제작성공() {
         List<Day> noLectureDays = List.of(Day.FRI);
-        List<TimeTable> timeTables = wizard.makeTimeTable(lectureToRegister, noLectureDays);
+        List<TimeTable> timeTables = wizard.generate(lectureToRegister, noLectureDays);
 
         for (int i = 0; i < timeTables.size(); i++) {
             TimeTable table = timeTables.get(i);
@@ -36,7 +36,7 @@ class RegisterWizardTest {
     @Test
     void 공강날짜지정_제작실패() {
         List<Day> noLectureDays = List.of(Day.MON, Day.TUE, Day.WED, Day.THU, Day.FRI);
-        List<TimeTable> timeTables = wizard.makeTimeTable(lectureToRegister, noLectureDays);
+        List<TimeTable> timeTables = wizard.generate(lectureToRegister, noLectureDays);
 
         assertThat(timeTables.isEmpty()).isTrue();
     }
