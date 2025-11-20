@@ -6,6 +6,8 @@ import com.timetable.timetable.dto.LectureRequest;
 import com.timetable.timetable.dto.TimeTableRequest;
 import com.timetable.timetable.service.TimeTableMaker;
 import com.timetable.timetable.util.ExcelParser;
+import com.timetable.timetable.util.LectureMatcher;
+import com.timetable.timetable.validator.Validator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,27 @@ public class TableController {
     @PostMapping("/receive")
     public String sendTimeTableResults(ClientRequest clientRequest, Model model) {
         List<String> registerCodes = clientRequest.lectures();
+
+        try {
+            if (registerCodes.isEmpty()) {
+                throw new IllegalArgumentException("최소 하나 이상의 강의를 신청해야 합니다.");
+            }
+
+            for (String code : registerCodes) {
+                Validator.validateLectureCode(code);
+            }
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+
+            // 결과 화면에 필요한 전체 강의 목록 다시 반환
+            List<LectureRequest> lectureRequests = allLectures.stream()
+                    .map(LectureRequest::from)
+                    .toList();
+            model.addAttribute("searchedLectures", lectureRequests);
+
+            return "RegisterLecture";
+        }
+
         List<Day> noLectureDays = Stream.ofNullable(clientRequest.days())
                 .flatMap(List::stream)
                 .map(Day::getDay)
@@ -45,7 +68,7 @@ public class TableController {
                 .flatMap(List::stream)
                 .toList();
 
-        TimeTableMaker timeTableMaker = new TimeTableMaker(new RegisterWizard(), new LectureMatcher(), allLectures);
+        TimeTableMaker timeTableMaker = new TimeTableMaker(new DFSTimeTableGenerator(), new LectureMatcher(), allLectures);
         List<TimeTableRequest> timeTables = makeTimeTable(registerCodes, noLectureDays, timeTableMaker);
         List<TimeTableRequest> spareTimeTables = makeTimeTable(getLectureCodesForSpare(registerCodes, spareCodes), noLectureDays, timeTableMaker);
 
