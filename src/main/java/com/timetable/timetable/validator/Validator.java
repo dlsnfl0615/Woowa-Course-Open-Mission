@@ -1,38 +1,19 @@
 package com.timetable.timetable.validator;
 
-import com.timetable.timetable.domain.Day;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 public class Validator {
-    private static final Set<String> validKoreanDays =
-            Arrays.stream(Day.values())
-                    .map(Day::getKoreanDay)
-                    .collect(Collectors.toSet());
+    private static final String pattern = "[a-zA-Z]{3}[0-9]{4}-[0-9]{2}";
+    private static final String NO_BLANK = "학수번호로 공백을 입력할 수 없습니다.";
+    private static final String INCORRECT_PATTERN = "학수번호는 [알파벳 세 자리][숫자 네 자리] '-' [숫자 두자리]입니다";
 
-    private Validator() {
+    private Validator() {}
 
-    }
-
-    public static boolean validateInputLectures(String inputLectures) {
-        // 쉼표와 하이픈만 허용
-        return inputLectures.matches("^[a-zA-z0-9,-]+$");
-    }
-
-    public static boolean containsOnlyComma(String inputDays) {
-        return inputDays.matches("^[a-zA-z0-9,]+$");
-    }
-
-    public static boolean validateInputDays(List<String> inputDays) {
-        for (String inputDay : inputDays) {
-            if (!validKoreanDays.contains(inputDay)) {
-                return false;
-            }
+    public static void validateLectureCode(String lectureCode) {
+        if (lectureCode == null || lectureCode.isBlank()) {
+            throw new IllegalArgumentException(NO_BLANK);
         }
 
-        return true;
+        if (!lectureCode.matches(pattern)) {
+            throw new IllegalArgumentException(INCORRECT_PATTERN + " : " + lectureCode);
+        }
     }
 }
