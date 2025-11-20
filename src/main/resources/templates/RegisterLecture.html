@@ -38,6 +38,12 @@
 </head>
 <body>
 
+<script th:inline="javascript" th:if="${errorMessage}">
+    /*<![CDATA[*/
+    alert([[${errorMessage}]]);
+    /*]]>*/
+</script>
+
     <div class="container">
 
         <div class="lecture-list-panel">
