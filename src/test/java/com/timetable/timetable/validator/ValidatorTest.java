@@ -4,21 +4,16 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ValidatorTest {
     @Test
-    void 콤마_분할_성공() {
-        String input1 = "CSC-1234,CSE-9876";
-        assertThat(Validator.validateInputLectures(input1)).isTrue();
-
-        String input2 = "월,화,수,목";
-        assertThat(Validator.containsOnlyComma(input2)).isTrue();
-    }
-
-    @Test
-    void 요일() {
-        List<String> days = List.of("월", "화", "수", "목", "금");
-        assertThat(Validator.validateInputDays(days)).isTrue();
+    void 틀린_학수번호() {
+        List<String> lectureCodes = List.of("a1", "acd1234", "CSC1234", "CSC-", "CS-1234", "CSC-12", "CSC-12345", "");
+        for (String code : lectureCodes) {
+            assertThrows(IllegalArgumentException.class, () -> {
+                Validator.validateLectureCode(code);
+            });
+        }
     }
 }
