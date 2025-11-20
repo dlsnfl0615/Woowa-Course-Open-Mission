@@ -31,13 +31,6 @@
   </tr>
   <tr>
     <td rowspan="1">3</td>
-    <td rowspan="1">직접 강의 추가</td>
-    <td>사용자는 강의명, 교수명, 학수번호, 강의시간을 직접 입력하여 시간표에 추가한다.</td>
-    <td>5</td>
-    <td rowspan="1">상</td>
-  </tr>
-  <tr>
-    <td rowspan="1">4</td>
     <td rowspan="1">시간표 출력</td>
     <td>사용자는 생성된 시간표 후보중에서 원하는 시간표를 선택한다.</td>
     <td>4</td>
@@ -45,7 +38,7 @@
   </tr>
 
   <tr>
-    <td rowspan="3">5</td>
+    <td rowspan="3">4</td>
     <td rowspan="3">개설 강의 엑셀 파일 입력</td>
     <td>사용자는 학교에서 공개된 개설 강의 엑셀 파일을 프로그램에 업로드한다.</td>
     <td>5</td>
@@ -60,7 +53,7 @@
     <td>6</td>
   </tr>
 <tr>
-    <td rowspan="3">6</td>
+    <td rowspan="3">5</td>
     <td rowspan="3">공강 요일 지정</td>
     <td>사용자는 월~금 중 특정 요일을 공강으로 설정한다.</td>
     <td>3</td>
@@ -75,7 +68,7 @@
     <td>2</td>
   </tr>
   <tr>
-    <td rowspan="1">7</td>
+    <td rowspan="1">6</td>
     <td rowspan="1">플랜B 시간표 생성</td>
     <td>사용자는 강의명, 교수명, 학수번호, 강의시간을 직접 입력하여 시간표에 추가한다.</td>
     <td>5</td>
