@@ -1,4 +1,6 @@
-package com.timetable.timetable.domain;
+package com.timetable.timetable.util;
+
+import com.timetable.timetable.domain.Lecture;
 
 import java.util.ArrayList;
 import java.util.List;
