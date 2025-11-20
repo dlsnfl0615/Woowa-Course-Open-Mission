@@ -2,10 +2,11 @@ package com.timetable.timetable.domain;
 
 import java.util.*;
 
-public class RegisterWizard {
+public class DFSTimeTableGenerator implements TimeTableGenerator {
     private final List<Lecture> usedLectures = new ArrayList<>();
 
-    public List<TimeTable> makeTimeTable(List<Lecture> lecturesToRegister, List<Day> noLectureDays) {
+    @Override
+    public List<TimeTable> generate(List<Lecture> lecturesToRegister, List<Day> noLectureDays) {
 
         int uniqueLectures = divideLectureByType(lecturesToRegister).size(); // 강의 종류 수
         List<TimeTable> timeTables = new ArrayList<>();
