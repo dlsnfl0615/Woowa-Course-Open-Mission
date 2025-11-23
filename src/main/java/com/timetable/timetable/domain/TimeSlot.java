@@ -19,6 +19,11 @@ public class TimeSlot {
             return false;
         }
 
+        if (this.end.equals(otherTimeSlot.start)
+                || this.start.equals(otherTimeSlot.end)) { // 연강 (한 강의 끝나자마자 다음 강의 시작)인 경우도 시간표 등록할 수 있게
+            return false;
+        }
+
         if (otherTimeSlot.start.isBefore(this.start)) { // otherTimeSlot의 시작 시간이 9시인데 thisTimeSlot의 시작시간이 10시일 때
             if (otherTimeSlot.end.isBefore(this.start)) { // otherTimeSlot의 종료 시간이 10시 전이기만 하면 안 겹침
                 return false;
