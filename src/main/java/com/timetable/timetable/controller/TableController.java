@@ -103,8 +103,9 @@ public class TableController {
         return timeTableRequests;
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String searchLecture(Model model, @RequestParam("lectureToSearch") String lectureNameToSearch) {
+    @PostMapping("/search")
+    @ResponseBody
+    public List<LectureRequest> searchLecture(@RequestParam("lectureToSearch") String lectureNameToSearch) {
         List<LectureRequest> searchedLectures = new ArrayList<>();
 
         for (Lecture lecture : allLectures) {
@@ -114,13 +115,11 @@ public class TableController {
         }
 
         if (lectureNameToSearch.isEmpty()) {
-            searchedLectures = allLectures.stream()
+            return allLectures.stream()
                     .map(LectureRequest::from)
                     .toList();
         }
 
-        model.addAttribute("searchedLectures", searchedLectures);
-
-        return "RegisterLecture";
+        return searchedLectures;
     }
 }
