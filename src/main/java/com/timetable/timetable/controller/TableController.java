@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 @Controller
 public class TableController {
     private List<Lecture> allLectures;
-    private final String PATH = "excel-data/개설강좌_테스트.xlsx";
+    private final String PATH = "excel-data/개설강좌_첨융대.xlsx";
 
     @GetMapping("/RegisterLecture")
     public String getLecturesToRegister(Model model) {
