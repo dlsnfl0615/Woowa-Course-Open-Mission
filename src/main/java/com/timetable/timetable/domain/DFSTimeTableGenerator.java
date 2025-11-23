@@ -3,41 +3,49 @@ package com.timetable.timetable.domain;
 import java.util.*;
 
 public class DFSTimeTableGenerator implements TimeTableGenerator {
-    private final List<Lecture> usedLectures = new ArrayList<>();
-
     @Override
     public List<TimeTable> generate(List<Lecture> lecturesToRegister, List<Day> noLectureDays) {
-
-        int uniqueLectures = divideLectureByType(lecturesToRegister).size(); // 강의 종류 수
         List<TimeTable> timeTables = new ArrayList<>();
 
-        dfsPickingLecture(lecturesToRegister, timeTables, noLectureDays, uniqueLectures);
+        Map<String, List<Lecture>> groupedLectures = divideLectureByType(lecturesToRegister);
+
+        List<String> lectures = new ArrayList<>(groupedLectures.keySet());
+
+        dfsPickingLecture(0, lectures, groupedLectures, new ArrayList<>(), timeTables, noLectureDays);
 
         return timeTables;
     }
 
     // 조건에 맞는 모든 강의 시간표 찾기
-    public void dfsPickingLecture(List<Lecture> lecturesToRegister,
-                                  List<TimeTable> timeTables,
-                                  List<Day> noLectureDays,
-                                  int uniqueLectures) {
+    public void dfsPickingLecture(int depth,
+                                  List<String> lectures,
+                                  Map<String, List<Lecture>> groupedLectures,
+                                  List<Lecture> currentTimetable,
+                                  List<TimeTable> result,
+                                  List<Day> noLectureDays) {
         // 사용자가 원하는 강의 종류 수를 모두 신청하면 종료
-        if (usedLectures.size() == uniqueLectures) {
-            timeTables.add(new TimeTable(new ArrayList<>(usedLectures)));
+        if (depth == lectures.size()) {
+            result.add(new TimeTable(new ArrayList<>(currentTimetable)));
             return;
         }
 
-        for (Lecture lecture : lecturesToRegister) {
-            if (canAddLecture(lecture, noLectureDays)) {
-                usedLectures.add(lecture);
-                dfsPickingLecture(lecturesToRegister, timeTables, noLectureDays, uniqueLectures);
-                usedLectures.removeLast();
+        String currentSubject = lectures.get(depth);
+        List<Lecture> candidates = groupedLectures.get(currentSubject);
+
+        for (Lecture lecture : candidates) {
+            // 시간 겹침 및 공강일 체크
+            if (canAddLecture(lecture, currentTimetable, noLectureDays)) {
+                currentTimetable.add(lecture); // 선택
+
+                // 다음 과목 선택하러 이동 (depth + 1)
+                dfsPickingLecture(depth + 1, lectures, groupedLectures, currentTimetable, result, noLectureDays);
+
+                currentTimetable.removeLast();
             }
         }
-
     }
 
-    public boolean canAddLecture(Lecture lecture, List<Day> noLectureDays) {
+    public boolean canAddLecture(Lecture lecture, List<Lecture> currentTimetable, List<Day> noLectureDays) {
         if (lecture.conflictsWithNoLectureDays(noLectureDays)) {
             return false;
         }
@@ -46,13 +54,9 @@ public class DFSTimeTableGenerator implements TimeTableGenerator {
             return true;
         }
 
-        if (usedLectures.isEmpty()) {
-            return true;
-        }
-
-        for (Lecture usedLecture : usedLectures) {
-            if (usedLecture.overlapsTimeWith(lecture)
-                    || usedLecture.overlapsNameWith(lecture)) {
+        for (Lecture existing : currentTimetable) {
+            if (!existing.isCyberLecture() // 사이버 강의가 아닌데
+                    && existing.overlapsTimeWith(lecture)) { // 시간이 겹치면
                 return false;
             }
         }
