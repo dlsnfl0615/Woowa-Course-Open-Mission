@@ -1,5 +1,8 @@
 package com.timetable.timetable.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Day {
     MON("월"),
     TUE("화"),
